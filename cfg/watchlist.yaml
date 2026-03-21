@@ -1,19 +1,25 @@
+# this watchlist is an example
+# url: url to perfumehub (check all variants option!)
+# volumes: volume[ml]: price[pln] - pair of volume and price below which notification is wanted
+
 brands:
   - brand: "Tom Ford"
     fragrances:
       - name: "Neroli Portofino"
         url: "https://perfumehub.pl/tom-ford-neroli-portofino-woda-perfumowana-unisex?all=true"
-        tmp_p: "tfneroliportofino.html"
-        # volumes format:
-        # volume[ml]: price[pln]
         volumes:
           50: 500
           100: 800
+          30: 400
 
   - brand: "French Avenue"
     fragrances:
       - name: "Platine Blanc"
         url: "https://perfumehub.pl/french-avenue-platine-blanc-ekstrakt-perfum-unisex?all=true"
-        tmp_p: "platineblanc.html"
         volumes:
-          100: 800
+          100: 170
+
+      - name: "Sun Kissed"
+        url: "https://perfumehub.pl/french-avenue-sun-kissed-ekstrakt-perfum-unisex?all=true"
+        volumes:
+          100: 140
