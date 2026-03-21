@@ -34,20 +34,21 @@ def scrap(url: str, htmlpath: str):
         soup = BeautifulSoup(r.text, "html.parser")
     return soup
 
-def get_fragrance_list() -> list:
+def get_fragrance_list() -> dict:
     with open(os.path.join(os.pardir, 'cfg', 'fragrances.yaml')) as f:
         return yaml.safe_load(f)
     
+def main():
+    frags = get_fragrance_list()
 
-# scrap("https://perfumehub.pl/french-avenue-platine-blanc-ekstrakt-perfum-unisex?all=true")
-# volumes = ['50', '100', '30']
-# soup = scrap(1)
-# lowest = get_lowest_prices(soup, volumes)
+    for brand in frags['brands']:
+        for fragrance in brand['fragrances']:
+            lowest_prices = get_lowest_prices(
+                scrap(None, fragrance['tmp_p']),
+                fragrance['volumes'].keys()
+            )
+            print(lowest_prices)
+            print(fragrance['volumes'])
 
-frags = get_fragrance_list()
-
-for brand in frags['brands']:
-    print(brand['brand'])
-    for fragrance in brand['fragrances']:
-        res = get_lowest_prices(scrap(None, fragrance['tmp_p']),fragrance['volumes'].keys())
-        print(res)
+if __name__=='__main__':
+    main()
