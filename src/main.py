@@ -2,8 +2,8 @@ import requests
 import yaml
 import os
 from bs4 import BeautifulSoup, Tag
-
-PROTOTYPE=True
+from dotenv import load_dotenv
+import notificators
 
 def get_lowest_prices(soup: BeautifulSoup, volumes: list[str]) -> dict[str, float]:
     volumes_ml = [str(volume)+' ml' for volume in volumes]
@@ -24,31 +24,43 @@ def get_lowest_prices(soup: BeautifulSoup, volumes: list[str]) -> dict[str, floa
         lowest_prices[title.rstrip('ml').strip()] = float(price.lstrip('od').rstrip('zł').strip())
     return lowest_prices
 
-def scrap(url: str, htmlpath: str):
-    if PROTOTYPE:
-        with open(htmlpath, "r", encoding="utf-8") as file:
-            html_content = file.read()
-        soup = BeautifulSoup(html_content, "html.parser")
-    else:
-        r = requests.get(url, headers={"User-Agent": "Mozilla/5.0"})
-        soup = BeautifulSoup(r.text, "html.parser")
-    return soup
+def scrap(url: str) -> BeautifulSoup:
+    r = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
+    return BeautifulSoup(r.text, 'html.parser')
 
-def get_fragrance_list() -> dict:
-    with open(os.path.join(os.pardir, 'cfg', 'fragrances.yaml')) as f:
+def get_watchlist() -> dict:
+    with open(os.path.join(os.pardir, 'cfg', 'watchlist.yaml')) as f:
         return yaml.safe_load(f)
-    
-def main():
-    frags = get_fragrance_list()
 
-    for brand in frags['brands']:
+def find_fragrances_below_price(tracked: dict):
+    for brand in tracked['brands']:
         for fragrance in brand['fragrances']:
-            lowest_prices = get_lowest_prices(
-                scrap(None, fragrance['tmp_p']),
+            current_prices = get_lowest_prices(
+                scrap(url=fragrance['url']),
                 fragrance['volumes'].keys()
             )
-            print(lowest_prices)
-            print(fragrance['volumes'])
+            thresholds = dict(
+                sorted(
+                    fragrance['volumes'].items(),
+                    key=lambda x: x[0],
+                    reverse=True
+                )
+            )
+            for volume, price_threshold in thresholds.items():
+                current_price = current_prices.get(str(volume))
+                if current_price:
+                    if current_price<=price_threshold:
+                        notificators.discord(
+                            brand=brand['brand'],
+                            fragrance=fragrance['name'],
+                            volume=volume,
+                            current_price=current_price,
+                            url=fragrance['url']
+                        )
+
+def main():
+    load_dotenv()
+    find_fragrances_below_price(get_watchlist())
 
 if __name__=='__main__':
     main()
