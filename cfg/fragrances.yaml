@@ -1,0 +1,19 @@
+brands:
+  - brand: "Tom Ford"
+    fragrances:
+      - name: "Neroli Portofino"
+        url: "https://perfumehub.pl/tom-ford-neroli-portofino-woda-perfumowana-unisex?all=true"
+        tmp_p: "tfneroliportofino.html"
+        # volumes format:
+        # volume[ml]: price[pln]
+        volumes:
+          50: 500
+          100: 800
+
+  - brand: "French Avenue"
+    fragrances:
+      - name: "Platine Blanc"
+        url: "https://perfumehub.pl/french-avenue-platine-blanc-ekstrakt-perfum-unisex?all=true"
+        tmp_p: "platineblanc.html"
+        volumes:
+          100: 800
