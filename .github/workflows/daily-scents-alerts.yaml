@@ -27,7 +27,7 @@ jobs:
       - name: Create personal YAML file
         run: |
           cat << 'EOF' > cfg/watchlist.yaml
-          ${{ secrets.PERSONAL_YAML_CONFIG }}
+          ${{ secrets.MY_WATCHLIST }}
           EOF
 
       - name: Run Scents Alerts
