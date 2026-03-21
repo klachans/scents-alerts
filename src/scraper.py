@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup, Tag
 PROTOTYPE=True
 
 def get_lowest_prices(soup: BeautifulSoup, volumes: list[str]) -> dict[str, float]:
-    volumes_ml = [volume+' ml' for volume in volumes]
+    volumes_ml = [str(volume)+' ml' for volume in volumes]
 
     def is_target_volume(tag: Tag) -> bool:
         if tag.name == 'a' and 'variant-tile' in tag.get('class', []):
