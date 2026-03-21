@@ -1,6 +1,6 @@
 import requests
 import yaml
-import os
+from pathlib import Path
 from bs4 import BeautifulSoup, Tag
 from dotenv import load_dotenv
 import notificators
@@ -29,7 +29,8 @@ def scrap(url: str) -> BeautifulSoup:
     return BeautifulSoup(r.text, 'html.parser')
 
 def get_watchlist() -> dict:
-    with open(os.path.join(os.pardir, 'cfg', 'watchlist.yaml')) as f:
+    watchlist_path = Path(__file__).parent.parent / 'cfg' / 'watchlist.yaml'
+    with open(watchlist_path) as f:
         return yaml.safe_load(f)
 
 def find_fragrances_below_price(tracked: dict):
