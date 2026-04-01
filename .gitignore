@@ -2,3 +2,4 @@
 venv
 src/__pycache__
 src/test.py
+cfg/my-current-watchlist.yaml
