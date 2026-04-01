@@ -1,4 +1,8 @@
 # this watchlist is an example
+# this file is used when running manually
+# when run is triggered by github actions this file gets overwritten by MY_WATCHLIST secret
+# from user's account (personalized yaml should be stored in secret)
+
 # url: url to perfumehub (check all variants option!)
 # volumes: volume[ml]: price[pln] - pair of volume and price below which notification is wanted
 
@@ -8,18 +12,25 @@ brands:
       - name: "Neroli Portofino"
         url: "https://perfumehub.pl/tom-ford-neroli-portofino-woda-perfumowana-unisex?all=true"
         volumes:
+          100: 750
           50: 500
-          100: 800
-          30: 400
+          30: 350
+
+  - brand: "Maison Margiela"
+    fragrances:
+      - name: "Never Ending Summer"
+        url: "https://perfumehub.pl/maison-margiela-never__ending-summer-woda-toaletowa-unisex?all=true"
+        volumes:
+          100: 400
+
+      - name: "Jazz Club"
+        url: "https://perfumehub.pl/maison-margiela-jazz-club-woda-toaletowa-unisex?all=true"
+        volumes:
+          100: 300
 
   - brand: "French Avenue"
     fragrances:
       - name: "Platine Blanc"
         url: "https://perfumehub.pl/french-avenue-platine-blanc-ekstrakt-perfum-unisex?all=true"
         volumes:
-          100: 170
-
-      - name: "Sun Kissed"
-        url: "https://perfumehub.pl/french-avenue-sun-kissed-ekstrakt-perfum-unisex?all=true"
-        volumes:
-          100: 140
+          100: 160
