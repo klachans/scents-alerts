@@ -3,7 +3,10 @@ import yaml
 from pathlib import Path
 from bs4 import BeautifulSoup, Tag
 from dotenv import load_dotenv
-import notificators
+from scents_alerts import notificators
+
+PRIVATE_WATCHLIST = Path(__file__).parent.parent.parent / 'cfg' / 'my-current-watchlist.yaml'
+PUBLIC_WATCHLIST = Path(__file__).parent.parent.parent / 'cfg' / 'watchlist.yaml'
 
 def get_lowest_prices(soup: BeautifulSoup, volumes: list[str]) -> dict[str, float]:
     volumes_ml = [str(volume)+' ml' for volume in volumes]
@@ -29,11 +32,12 @@ def scrap(url: str) -> BeautifulSoup:
     return BeautifulSoup(r.text, 'html.parser')
 
 def get_watchlist() -> dict:
-    watchlist_path = Path(__file__).parent.parent / 'cfg' / 'watchlist.yaml'
+    watchlist_path = PRIVATE_WATCHLIST if PRIVATE_WATCHLIST.exists() else PUBLIC_WATCHLIST
     with open(watchlist_path) as f:
         return yaml.safe_load(f)
 
 def find_fragrances_below_price(tracked: dict):
+    found_any = False
     for brand in tracked['brands']:
         for fragrance in brand['fragrances']:
             current_prices = get_lowest_prices(
@@ -58,6 +62,9 @@ def find_fragrances_below_price(tracked: dict):
                             current_price=current_price,
                             url=fragrance['url']
                         )
+                        found_any = True
+    if not found_any:
+        print("Nie znaleziono perfumów poniżej docelowej ceny")
 
 def main():
     load_dotenv()
