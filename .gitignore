@@ -7,3 +7,4 @@ __pycache__/
 .ruff_cache/
 src/test.py
 cfg/my-current-watchlist.yaml
+logs/
